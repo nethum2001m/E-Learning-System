@@ -32,7 +32,14 @@ const Registration = () => {
       });
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
-        navigate(response.data.role === 'Admin' ? '/admin' : '/dashboard');
+        if(response.data.role === 'Student')
+        {
+          navigate('/student-dashboard')
+        }
+        else if(response.data.role === 'Teacher')
+        {
+          navigate('/teacher-dashboard')
+        }
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
