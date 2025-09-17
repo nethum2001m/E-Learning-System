@@ -19,7 +19,7 @@ function App() {
 
                 <Route path = '/teacher-dashboard' element = { < TeacherDashboard /> }/>
                 <Route path = '/admin-dashboard' element = { < Admin /> }/>
-                <Route path="/login" element={<Login />} />
+                <Route index element={<Login />} />
 
             </Routes > 
 

@@ -234,7 +234,7 @@ const Registration = () => {
             <div className="text-center mt-4">
               <p className="text-sm text-gray-600">
                 Already have an account?{' '}
-                <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500 transition duration-300">
+                <Link to="/" className="font-medium text-indigo-600 hover:text-indigo-500 transition duration-300">
                   Sign in
                 </Link>
               </p>
