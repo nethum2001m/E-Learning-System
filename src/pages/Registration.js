@@ -31,15 +31,8 @@ const Registration = () => {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        if(response.data.role === 'Student')
-        {
-          navigate('/student-dashboard')
-        }
-        else if(response.data.role === 'Teacher')
-        {
-          navigate('/teacher-dashboard')
-        }
+        alert('Registration successful! Please log in.');
+        navigate("/login")
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');

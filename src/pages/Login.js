@@ -1,33 +1,38 @@
 import React, { useState } from 'react';
-
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-
+    const navigate = useNavigate();
     const handleSubmit = async(e) => {
         e.preventDefault();
         setIsLoading(true);
         setMessage("");
 
-        try {
-            const response = await fetch('http://localhost:3000/login', {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
-            });
-
-            if (response.ok) {
-                setMessage("Login successful! Redirecting...");
-            } else {
+        
+            await axios.post("http://localhost:8000/api/user/login",{
+                email,
+                password
+            }).then((res)=>{
+                localStorage.setItem("token",res.data.token);
+                localStorage.setItem("role",res.data.role);
+                setMessage("Login successful!");
+                if(res.data.role==="Student"){
+                    navigate("/student-dashboard")
+                }else if(res.data.role==="Teacher")
+                    {
+                        navigate("/teacher-dashboard")
+                    }else if(res.data.role==="Admin")
+                        {
+                            navigate("/admin-dashboard")
+                        } 
+            }).catch((err)=>{
                 setMessage("Login failed. Please check your credentials.");
-            }
-        } catch (err) {
-            setMessage("Error: " + err.message);
-        } finally {
-            setIsLoading(false);
-        }
+            })
+        
     };
 
     return (
@@ -156,7 +161,7 @@ function Login() {
                     <div className="mt-6 text-center">
                         <p className="text-sm text-gray-600">
                             Don't have an account?{' '}
-                            <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500 transition duration-300 ease-in-out">
+                            <a href="/signup" className="font-medium text-indigo-600 hover:text-indigo-500 transition duration-300 ease-in-out">
                                 Sign up
                             </a>
                         </p>
