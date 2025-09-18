@@ -32,7 +32,7 @@ const Registration = () => {
       });
       if (response.data.token) {
         alert('Registration successful! Please log in.');
-        navigate("/login")
+        navigate("/")
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
