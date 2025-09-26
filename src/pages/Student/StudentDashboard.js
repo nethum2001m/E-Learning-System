@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FiHome, FiBook, FiClipboard, FiAward, FiFolder, 
@@ -10,12 +10,35 @@ import {
   FaChalkboardTeacher, FaGraduationCap, 
   FaRegCalendarCheck, FaTasks 
 } from 'react-icons/fa';
-
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 const StudentDashboard = () => {
+  const navigate = useNavigate()
+  const url = "http://localhost:8000/api/student/verifyStudentToken"
   const [activeTab, setActiveTab] = useState('overview');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notifications, setNotifications] = useState(3);
-
+  useEffect(()=>{
+    const token = localStorage.getItem("token")
+    const getTeacherId = async () => {
+      await axios
+        .post(
+          url,
+          null,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((res) => {
+        })
+        .catch(() => {
+          navigate("/");
+        });
+    };
+    getTeacherId();
+  },[])
   // Sample data
   const courses = [
     { 

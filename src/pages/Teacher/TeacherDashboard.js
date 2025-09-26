@@ -1,110 +1,182 @@
-import React, { useState } from 'react';
-import { FaChalkboardTeacher, FaUsers, FaBook, FaClipboardList, FaPlus, FaBullhorn } from 'react-icons/fa';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from "react";
+import {
+  FaChalkboardTeacher,
+  FaUsers,
+  FaBook,
+  FaClipboardList,
+  FaPlus,
+  FaBullhorn,
+} from "react-icons/fa";
+import { motion } from "framer-motion";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const TeacherDashboard = () => {
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [teacher, setTeacher] = useState("");
+  const [payorFree, setPayOrFree] = useState("");
+  const [coursePicture, setCoursePicture] = useState(null);
+
+  const url = "http://localhost:8000/api/teacher/getteacherid";
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const getTeacherId = async () => {
+      await axios
+        .post(
+          url,
+          null,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((res) => {
+          setTeacher(res.data.teacherid);
+        })
+        .catch(() => {
+          navigate("/");
+        });
+    };
+    getTeacherId();
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!title || !description || !payorFree || !coursePicture) {
+      alert("All fields are required");
+      return;
+    }
+    if (!teacher) {
+      alert("Internal server error");
+      return;
+    }
+
+    const formdata = new FormData();
+    formdata.append("title", title);
+    formdata.append("description", description);
+    formdata.append("teacher", teacher);
+    formdata.append("payorFree", payorFree);
+    formdata.append("coursePicture", coursePicture);
+
+    const submitform = async () => {
+      const token = localStorage.getItem("token");
+      await axios
+        .post("http://localhost:8000/api/course/create", formdata, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(() => {
+          alert("Course created successfully");
+          setShowModal(false);
+          setTitle("");
+          setDescription("");
+          setPayOrFree("");
+          setCoursePicture(null);
+        })
+        .catch(() => {
+          alert("Error in creating course");
+        });
+    };
+    submitform();
+  };
 
   const stats = [
-    { title: 'Total Students', value: 120, icon: <FaUsers size={24} color="#fff" /> },
-    { title: 'Courses Assigned', value: 8, icon: <FaBook size={24} color="#fff" /> },
-    { title: 'Pending Assignments', value: 15, icon: <FaClipboardList size={24} color="#fff" /> },
+    {
+      title: "Total Students",
+      value: 120,
+      icon: <FaUsers className="text-white text-2xl" />,
+    },
+    {
+      title: "Courses Assigned",
+      value: 8,
+      icon: <FaBook className="text-white text-2xl" />,
+    },
+    {
+      title: "Pending Assignments",
+      value: 15,
+      icon: <FaClipboardList className="text-white text-2xl" />,
+    },
   ];
 
   const recentActivities = [
-    { student: 'Alice Johnson', activity: 'Submitted Assignment 3', time: '2 hours ago' },
-    { student: 'Mark Smith', activity: 'Joined your course', time: '1 day ago' },
-    { student: 'Jane Doe', activity: 'Completed Quiz 2', time: '3 days ago' },
+    {
+      student: "Alice Johnson",
+      activity: "Submitted Assignment 3",
+      time: "2 hours ago",
+    },
+    { student: "Mark Smith", activity: "Joined your course", time: "1 day ago" },
+    { student: "Jane Doe", activity: "Completed Quiz 2", time: "3 days ago" },
   ];
 
   const upcomingClasses = [
-    { course: 'Math 101', time: 'Today 10:00 AM' },
-    { course: 'Physics 201', time: 'Today 2:00 PM' },
-    { course: 'Chemistry 301', time: 'Tomorrow 11:00 AM' },
+    { course: "Math 101", time: "Today 10:00 AM" },
+    { course: "Physics 201", time: "Today 2:00 PM" },
+    { course: "Chemistry 301", time: "Tomorrow 11:00 AM" },
   ];
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      style={{ display: 'flex', minHeight: '100vh', background: '#f3f4f6' }}
+      className="flex min-h-screen bg-gray-100"
     >
       {/* Sidebar */}
       <motion.aside
         initial={{ x: -250 }}
         animate={{ x: 0 }}
-        transition={{ type: 'spring', stiffness: 70, damping: 20 }}
-        style={{ width: '250px', background: '#1e293b', color: '#fff', padding: '2rem 1rem' }}
+        transition={{ type: "spring", stiffness: 70, damping: 20 }}
+        className="w-64 bg-gray-900 text-white p-6"
       >
-        <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '2rem', color: '#f59e42' }}>EduSphere</h2>
+        <h2 className="text-2xl font-bold mb-8 text-orange-400">EduSphere</h2>
         <nav>
-          <ul style={{ listStyle: 'none', padding: 0 }}>
-            <li style={{ marginBottom: '1rem', cursor: 'pointer' }}>Dashboard</li>
-            <li style={{ marginBottom: '1rem', cursor: 'pointer' }}>Courses</li>
-            <li style={{ marginBottom: '1rem', cursor: 'pointer' }}>Assignments</li>
-            <li style={{ marginBottom: '1rem', cursor: 'pointer' }}>Students</li>
-            <li style={{ marginBottom: '1rem', cursor: 'pointer' }}>Profile</li>
+          <ul className="space-y-4">
+            <li className="cursor-pointer hover:text-orange-400">Dashboard</li>
+            <li className="cursor-pointer hover:text-orange-400">Courses</li>
+            <li className="cursor-pointer hover:text-orange-400">Assignments</li>
+            <li className="cursor-pointer hover:text-orange-400">Students</li>
+            <li className="cursor-pointer hover:text-orange-400">Profile</li>
           </ul>
         </nav>
       </motion.aside>
 
       {/* Main Content */}
-      <main style={{ flex: 1, padding: '2rem' }}>
+      <main className="flex-1 p-8">
         {/* Header */}
         <motion.div
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
-          style={{ textAlign: 'center', marginBottom: '2rem' }}
+          className="text-center mb-8"
         >
-          <h1
-            style={{
-              fontSize: '2.5rem',
-              fontWeight: 'bold',
-              color: '#f59e42',
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-              padding: '1rem 2rem',
-              borderRadius: '8px',
-              background: '#fff',
-              display: 'inline-block',
-            }}
-          >
+          <h1 className="text-4xl font-bold text-orange-400 uppercase shadow-md bg-white inline-block px-8 py-4 rounded-lg">
             Welcome, Teacher!
           </h1>
         </motion.div>
 
         {/* Stats Cards */}
-        <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '2rem' }}>
+        <div className="flex flex-wrap gap-6 justify-center mb-8">
           {stats.map((stat, index) => (
             <motion.div
               key={index}
-              variants={cardVariants}
-              initial="hidden"
-              animate="visible"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.2, duration: 0.5 }}
-              whileHover={{ scale: 1.05, boxShadow: '0 8px 20px rgba(0,0,0,0.15)' }}
-              style={{
-                flex: '1 1 200px',
-                background: '#f59e42',
-                color: '#fff',
-                padding: '1.5rem',
-                borderRadius: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
               }}
+              className="flex flex-1 min-w-[200px] items-center justify-between bg-orange-400 text-white p-6 rounded-xl"
             >
               <div>
-                <p style={{ fontSize: '0.9rem', fontWeight: '500' }}>{stat.title}</p>
-                <h2 style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>{stat.value}</h2>
+                <p className="text-sm font-medium">{stat.title}</p>
+                <h2 className="text-2xl font-bold">{stat.value}</h2>
               </div>
               <div>{stat.icon}</div>
             </motion.div>
@@ -112,46 +184,17 @@ const TeacherDashboard = () => {
         </div>
 
         {/* Quick Actions */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2rem' }}
-        >
+        <div className="flex flex-wrap gap-4 mb-8">
           <motion.button
             whileHover={{ scale: 1.05 }}
-            style={{
-              flex: '1 1 150px',
-              padding: '1rem',
-              background: '#f59e42',
-              color: '#fff',
-              borderRadius: '10px',
-              border: 'none',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-            }}
+            className="flex items-center justify-center gap-2 flex-1 min-w-[150px] py-3 bg-orange-400 text-white rounded-lg font-bold"
           >
             <FaPlus /> Create Assignment
           </motion.button>
 
           <motion.button
             whileHover={{ scale: 1.05 }}
-            style={{
-              flex: '1 1 150px',
-              padding: '1rem',
-              background: '#3b82f6',
-              color: '#fff',
-              borderRadius: '10px',
-              border: 'none',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-            }}
+            className="flex items-center justify-center gap-2 flex-1 min-w-[150px] py-3 bg-blue-500 text-white rounded-lg font-bold"
           >
             <FaBullhorn /> Send Announcement
           </motion.button>
@@ -159,64 +202,52 @@ const TeacherDashboard = () => {
           <motion.button
             onClick={() => setShowModal(true)}
             whileHover={{ scale: 1.05 }}
-            style={{
-              flex: '1 1 150px',
-              padding: '1rem',
-              background: '#10b981',
-              color: '#fff',
-              borderRadius: '10px',
-              border: 'none',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-            }}
+            className="flex items-center justify-center gap-2 flex-1 min-w-[150px] py-3 bg-green-500 text-white rounded-lg font-bold"
           >
             <FaChalkboardTeacher /> Create Course
           </motion.button>
-        </motion.div>
+        </div>
 
         {/* Upcoming Classes */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          style={{ background: '#fff', borderRadius: '12px', padding: '1.5rem', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', marginBottom: '2rem' }}
-        >
-          <h3 style={{ fontSize: '1.3rem', fontWeight: '600', marginBottom: '1rem' }}>Upcoming Classes</h3>
-          <ul style={{ listStyle: 'none', padding: 0 }}>
+        <motion.div className="bg-white rounded-xl p-6 shadow mb-8">
+          <h3 className="text-lg font-semibold mb-4">Upcoming Classes</h3>
+          <ul>
             {upcomingClasses.map((cls, index) => (
               <motion.li
                 key={index}
-                whileHover={{ scale: 1.02, background: '#dbeafe', borderRadius: '8px' }}
-                transition={{ duration: 0.2 }}
-                style={{ padding: '0.8rem 0', borderBottom: '1px solid #e5e7eb', cursor: 'pointer' }}
+                whileHover={{
+                  scale: 1.02,
+                  backgroundColor: "#dbeafe",
+                  borderRadius: "8px",
+                }}
+                className="py-3 border-b border-gray-200 cursor-pointer"
               >
-                <p><strong>{cls.course}</strong> - {cls.time}</p>
+                <p>
+                  <strong>{cls.course}</strong> - {cls.time}
+                </p>
               </motion.li>
             ))}
           </ul>
         </motion.div>
 
         {/* Recent Activity */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          style={{ background: '#fff', borderRadius: '12px', padding: '1.5rem', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}
-        >
-          <h3 style={{ fontSize: '1.3rem', fontWeight: '600', marginBottom: '1rem' }}>Recent Activities</h3>
-          <ul style={{ listStyle: 'none', padding: 0 }}>
+        <motion.div className="bg-white rounded-xl p-6 shadow">
+          <h3 className="text-lg font-semibold mb-4">Recent Activities</h3>
+          <ul>
             {recentActivities.map((activity, index) => (
               <motion.li
                 key={index}
-                whileHover={{ scale: 1.02, background: '#fef3c7', borderRadius: '8px' }}
-                transition={{ duration: 0.2 }}
-                style={{ padding: '0.8rem 0', borderBottom: '1px solid #e5e7eb', cursor: 'pointer' }}
+                whileHover={{
+                  scale: 1.02,
+                  backgroundColor: "#fef3c7",
+                  borderRadius: "8px",
+                }}
+                className="py-3 border-b border-gray-200 cursor-pointer"
               >
-                <p><strong>{activity.student}</strong> - {activity.activity}</p>
-                <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>{activity.time}</span>
+                <p>
+                  <strong>{activity.student}</strong> - {activity.activity}
+                </p>
+                <span className="text-sm text-gray-500">{activity.time}</span>
               </motion.li>
             ))}
           </ul>
@@ -224,37 +255,62 @@ const TeacherDashboard = () => {
 
         {/* Create Course Modal */}
         {showModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              background: 'rgba(0,0,0,0.5)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 50,
-            }}
-          >
+          <motion.div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <motion.div
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
-              exit={{ scale: 0.8 }}
-              style={{ background: '#fff', borderRadius: '12px', padding: '2rem', width: '400px', position: 'relative' }}
+              className="bg-white rounded-xl p-8 w-96"
             >
-              <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>Create Course</h2>
-              <form style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <input type="text" placeholder="Course Name" style={{ padding: '0.8rem', borderRadius: '8px', border: '1px solid #ccc' }} />
-                <textarea placeholder="Description" style={{ padding: '0.8rem', borderRadius: '8px', border: '1px solid #ccc' }} />
-                <input type="text" placeholder="Schedule (e.g., Mon 10AM)" style={{ padding: '0.8rem', borderRadius: '8px', border: '1px solid #ccc' }} />
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
-                  <button type="button" onClick={() => setShowModal(false)} style={{ padding: '0.8rem 1.5rem', borderRadius: '8px', border: 'none', background: '#ef4444', color: '#fff', fontWeight: 'bold' }}>Cancel</button>
-                  <button type="submit" style={{ padding: '0.8rem 1.5rem', borderRadius: '8px', border: 'none', background: '#10b981', color: '#fff', fontWeight: 'bold' }}>Create</button>
+              <h2 className="text-xl font-bold mb-4">Create Course</h2>
+              <form
+                className="flex flex-col gap-4"
+                onSubmit={handleSubmit}
+              >
+                <input
+                  type="text"
+                  placeholder="Course Name"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                  className="p-3 rounded-lg border border-gray-300"
+                />
+                <textarea
+                  placeholder="Description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  required
+                  className="p-3 rounded-lg border border-gray-300"
+                />
+                <select
+                  value={payorFree}
+                  onChange={(e) => setPayOrFree(e.target.value)}
+                  required
+                  className="p-3 rounded-lg border border-gray-300"
+                >
+                  <option value="">Choose one</option>
+                  <option value="Paid">Paid</option>
+                  <option value="Free">Free</option>
+                </select>
+                <input
+                  required
+                  type="file"
+                  onChange={(e) => setCoursePicture(e.target.files[0])}
+                  className="p-2 border border-gray-300 rounded-lg"
+                />
+                <div className="flex justify-end gap-4">
+                  <button
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                    className="px-4 py-2 rounded-lg bg-red-500 text-white font-bold"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 rounded-lg bg-green-500 text-white font-bold"
+                  >
+                    Create
+                  </button>
                 </div>
               </form>
             </motion.div>
@@ -266,4 +322,3 @@ const TeacherDashboard = () => {
 };
 
 export default TeacherDashboard;
-

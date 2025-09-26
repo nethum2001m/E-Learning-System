@@ -1,10 +1,33 @@
-import React, { useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { FaUsers, FaBook, FaClipboardList, FaChalkboardTeacher, FaPlus, FaBullhorn } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 const AdminDashboard = () => {
   const [showModal, setShowModal] = useState(false);
-
+  const navigate = useNavigate()
+  const url = "http://localhost:8000/api/admin/verifyadmintoken"
+  useEffect(()=>{
+    const token = localStorage.getItem("token");
+    const getTeacherId = async () => {
+      await axios
+        .post(
+          url,
+          null,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((res) => {
+        })
+        .catch(() => {
+          navigate("/");
+        });
+    };
+    getTeacherId();
+  },[])
   const stats = [
     { title: 'Total Users', value: 350, icon: <FaUsers size={24} color="#fff" /> },
     { title: 'Courses', value: 25, icon: <FaBook size={24} color="#fff" /> },

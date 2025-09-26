@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 function Login() {
@@ -35,6 +35,39 @@ function Login() {
         
     };
 
+    useEffect(()=>{
+        
+        const token = localStorage.getItem("token")
+        const role = localStorage.getItem("role")
+        const url = "http://localhost:8000/api/user/checktoken"
+        if(token!=null)
+        {
+            const checkTokenIsValid = async() =>
+            {
+                await axios.post(url,null,{
+                    headers:{
+                        "Authorization":`Bearer ${token}`
+                    }
+                }).then((res)=>{
+                    if(role==="Student")
+                    {
+                        navigate("/student-dashboard")
+                    }
+                    else if(role==="Teacher")
+                    {
+                        navigate("/teacher-dashboard")
+                    }else if(role==="Admin")
+                    {
+                        navigate("/admin-dashboard")
+                    }
+                }).catch((err)=>{
+                    localStorage.removeItem("token")
+                    localStorage.removeItem("role")
+                })
+            }
+            checkTokenIsValid()
+        }
+    },[])
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden">
