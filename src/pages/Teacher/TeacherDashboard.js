@@ -14,8 +14,10 @@ import { useNavigate } from "react-router-dom";
 const TeacherDashboard = () => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
+  const [price,setPrice] = useState(0);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [category,setCategory] = useState("")
   const [teacher, setTeacher] = useState("");
   const [payorFree, setPayOrFree] = useState("");
   const [coursePicture, setCoursePicture] = useState(null);
@@ -57,6 +59,8 @@ const TeacherDashboard = () => {
     }
 
     const formdata = new FormData();
+    formdata.append("price",price)
+    formdata.append("category",category);
     formdata.append("title", title);
     formdata.append("description", description);
     formdata.append("teacher", teacher);
@@ -77,6 +81,7 @@ const TeacherDashboard = () => {
           setTitle("");
           setDescription("");
           setPayOrFree("");
+          setCategory("")
           setCoursePicture(null);
         })
         .catch(() => {
@@ -282,6 +287,24 @@ const TeacherDashboard = () => {
                   className="p-3 rounded-lg border border-gray-300"
                 />
                 <select
+                  value={category}
+                  onChange={(e)=>setCategory(e.target.value)}
+                  required
+                  className="p-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+                  <option value="">Choose Category</option>
+                  <option value="Technology & IT">Technology & IT</option>
+                  <option value="Business & Management">Business & Management</option>
+                  <option value="Personal Development">Personal Development</option>
+                  <option value="Creative Arts & Design">Creative Arts & Design</option>
+                  <option value="Science & Engineering">Science & Engineering</option>
+                  <option value="Language & Communication">Language & Communication</option>
+                  <option value="Health & Fitness">Health & Fitness</option>
+                  <option value="Life Skills & Lifestyle">Life Skills & Lifestyle</option>
+                  <option value="Exams & Certification Prep">Exams & Certification Prep</option>
+                  <option value="Others / Emerging Topics">Others / Emerging Topics</option>
+                </select>
+                <select
                   value={payorFree}
                   onChange={(e) => setPayOrFree(e.target.value)}
                   required
@@ -291,6 +314,19 @@ const TeacherDashboard = () => {
                   <option value="Paid">Paid</option>
                   <option value="Free">Free</option>
                 </select>
+                {
+                  payorFree === "Paid" ? (
+                    <input
+                  type="number"
+                  placeholder="Course Price"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  required
+                  className="p-3 rounded-lg border border-gray-300"
+                />
+                  ) :
+                  null
+                }
                 <input
                   required
                   type="file"
