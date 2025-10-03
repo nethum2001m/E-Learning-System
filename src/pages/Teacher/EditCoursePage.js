@@ -11,6 +11,8 @@ function EditCoursePage({courseId, lessonId, onClose, refreshLessons}) {
 
   const handleVideos = (e) => setVideos(e.target.files);
   const handlePdfs= (e) => setPdfs(e.target.files);
+  const token = localStorage.getItem("token"); 
+
 
   const handleSubmit = async(e)=> {
     e.preventDefault();
@@ -27,7 +29,10 @@ function EditCoursePage({courseId, lessonId, onClose, refreshLessons}) {
      await axios.post(
       `http://localhost:8000/api/course/materials/upload/${courseId}/${lessonId}`,
       formData,
-      { headers: { "Content-Type": "multipart/form-data" } }
+      { headers: {
+        "Content-Type": "multipart/form-data",
+        "Authorization": `Bearer ${token}`
+  } }
 
      );
 
