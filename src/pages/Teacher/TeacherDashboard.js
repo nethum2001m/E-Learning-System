@@ -6,10 +6,12 @@ import {
   FaClipboardList,
   FaPlus,
   FaBullhorn,
+  FaFile,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import CoursesPage from "./CoursesPage";
 
 const TeacherDashboard = () => {
   const navigate = useNavigate();
@@ -85,6 +87,11 @@ const TeacherDashboard = () => {
     };
     submitform();
   };
+ 
+    
+  const PageCourses =()=> {
+    navigate("/coursesPage")
+  }
 
   const stats = [
     {
@@ -205,6 +212,15 @@ const TeacherDashboard = () => {
             className="flex items-center justify-center gap-2 flex-1 min-w-[150px] py-3 bg-green-500 text-white rounded-lg font-bold"
           >
             <FaChalkboardTeacher /> Create Course
+          </motion.button>
+
+           {/* My courses */}
+          <motion.button
+            onClick={PageCourses}
+            whileHover={{ scale: 1.05 }}
+            className="flex items-center justify-center gap-2 flex-1 min-w-[150px] py-3 bg-blue-500 text-white rounded-lg font-bold"
+          >
+            <FaFile /> My Courses
           </motion.button>
         </div>
 
