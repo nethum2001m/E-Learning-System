@@ -1,19 +1,18 @@
 import axios from 'axios';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-function EditCoursePage({courseId, lessonId, onClose, refreshLessons}) {
+function EditCoursePage() {
 
+  const {id} = useParams()
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [videos, setVideos] = useState([]);
   const [pdfs, setPdfs] = useState([]);
   const [error, setError] = useState(null);
-
   const handleVideos = (e) => setVideos(e.target.files);
   const handlePdfs= (e) => setPdfs(e.target.files);
   const token = localStorage.getItem("token"); 
-
-
   const handleSubmit = async(e)=> {
     e.preventDefault();
 
@@ -27,7 +26,7 @@ function EditCoursePage({courseId, lessonId, onClose, refreshLessons}) {
      for(let i=0; i < pdfs.length; i++) formData.append("pdfs", pdfs[i]);
 
      await axios.post(
-      `http://localhost:8000/api/course/materials/upload/${courseId}/${lessonId}`,
+      `http://localhost:8000/api/course/materials/upload/${id}`,
       formData,
       { headers: {
         "Content-Type": "multipart/form-data",
@@ -37,8 +36,6 @@ function EditCoursePage({courseId, lessonId, onClose, refreshLessons}) {
      );
 
      alert("Lessons Updated Successfully");
-     refreshLessons();
-     onClose();
 
   }catch(err){
     setError(err);

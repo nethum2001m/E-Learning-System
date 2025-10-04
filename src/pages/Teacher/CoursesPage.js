@@ -18,7 +18,6 @@ function CoursesPage() {
                setError(err);
             }
         }
-
         fetchData();
     },[])
 
@@ -40,8 +39,8 @@ function CoursesPage() {
     }
 
     //navigate to lesson adding form
-    const updateCourse = () =>{
-      navigate('/courseEditPage');
+    const updateCourse = (id) =>{
+      navigate(`/courseEditPage/${id}`);
     }
 
     

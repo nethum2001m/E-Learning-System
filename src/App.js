@@ -20,7 +20,7 @@ function App() {
                 <Route path = '/teacher-dashboard' element = { < TeacherDashboard /> }/>
                 <Route path = '/admin-dashboard' element = { < Admin /> }/>
                 <Route path = '/coursesPage' element = {<CoursesPage/>}/>
-                <Route path='/courseEditPage' element = {<EditCoursePage/>}/>
+                <Route path='/courseEditPage/:id' element = {<EditCoursePage/>}/>
                 <Route index element={<Login />} />
             </Routes > 
         </div> 
