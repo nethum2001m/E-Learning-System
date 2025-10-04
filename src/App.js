@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import Admin from './pages/Admin/Admin';
 import CoursesPage from './pages/Teacher/CoursesPage';
 import EditCoursePage from './pages/Teacher/EditCoursePage';
+import TeacherLayout from './pages/Teacher/TeacherLayout';
 
 
 function App() {
@@ -22,6 +23,11 @@ function App() {
                 <Route path = '/coursesPage' element = {<CoursesPage/>}/>
                 <Route path='/courseEditPage/:id' element = {<EditCoursePage/>}/>
                 <Route index element={<Login />} />
+                <Route path='/teacher' element={<TeacherLayout/>}>
+                    <Route path='dashboard' element={<TeacherDashboard/>}/>
+                    <Route path='courses' element={<CoursesPage/>}/>
+                    <Route path='courseEditPage/:id' element={<EditCoursePage/>}/>
+                </Route>
             </Routes > 
         </div> 
     </Router >

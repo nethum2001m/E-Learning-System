@@ -11,7 +11,6 @@ import {
 import { motion } from "framer-motion";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import CoursesPage from "./CoursesPage";
 
 const TeacherDashboard = () => {
   const navigate = useNavigate();
@@ -86,13 +85,10 @@ const TeacherDashboard = () => {
         });
     };
     submitform();
-  };
- 
-    
+  }; 
   const PageCourses =()=> {
-    navigate("/coursesPage")
+    navigate("/teacher/courses")
   }
-
   const stats = [
     {
       title: "Total Students",
@@ -111,22 +107,6 @@ const TeacherDashboard = () => {
     },
   ];
 
-  const recentActivities = [
-    {
-      student: "Alice Johnson",
-      activity: "Submitted Assignment 3",
-      time: "2 hours ago",
-    },
-    { student: "Mark Smith", activity: "Joined your course", time: "1 day ago" },
-    { student: "Jane Doe", activity: "Completed Quiz 2", time: "3 days ago" },
-  ];
-
-  const upcomingClasses = [
-    { course: "Math 101", time: "Today 10:00 AM" },
-    { course: "Physics 201", time: "Today 2:00 PM" },
-    { course: "Chemistry 301", time: "Tomorrow 11:00 AM" },
-  ];
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -134,25 +114,6 @@ const TeacherDashboard = () => {
       transition={{ duration: 0.8 }}
       className="flex min-h-screen bg-gray-100"
     >
-      {/* Sidebar */}
-      <motion.aside
-        initial={{ x: -250 }}
-        animate={{ x: 0 }}
-        transition={{ type: "spring", stiffness: 70, damping: 20 }}
-        className="w-64 bg-gray-900 text-white p-6"
-      >
-        <h2 className="text-2xl font-bold mb-8 text-orange-400">EduSphere</h2>
-        <nav>
-          <ul className="space-y-4">
-            <li className="cursor-pointer hover:text-orange-400">Dashboard</li>
-            <li className="cursor-pointer hover:text-orange-400">Courses</li>
-            <li className="cursor-pointer hover:text-orange-400">Assignments</li>
-            <li className="cursor-pointer hover:text-orange-400">Students</li>
-            <li className="cursor-pointer hover:text-orange-400">Profile</li>
-          </ul>
-        </nav>
-      </motion.aside>
-
       {/* Main Content */}
       <main className="flex-1 p-8">
         {/* Header */}
@@ -223,52 +184,6 @@ const TeacherDashboard = () => {
             <FaFile /> My Courses
           </motion.button>
         </div>
-
-        {/* Upcoming Classes */}
-        <motion.div className="bg-white rounded-xl p-6 shadow mb-8">
-          <h3 className="text-lg font-semibold mb-4">Upcoming Classes</h3>
-          <ul>
-            {upcomingClasses.map((cls, index) => (
-              <motion.li
-                key={index}
-                whileHover={{
-                  scale: 1.02,
-                  backgroundColor: "#dbeafe",
-                  borderRadius: "8px",
-                }}
-                className="py-3 border-b border-gray-200 cursor-pointer"
-              >
-                <p>
-                  <strong>{cls.course}</strong> - {cls.time}
-                </p>
-              </motion.li>
-            ))}
-          </ul>
-        </motion.div>
-
-        {/* Recent Activity */}
-        <motion.div className="bg-white rounded-xl p-6 shadow">
-          <h3 className="text-lg font-semibold mb-4">Recent Activities</h3>
-          <ul>
-            {recentActivities.map((activity, index) => (
-              <motion.li
-                key={index}
-                whileHover={{
-                  scale: 1.02,
-                  backgroundColor: "#fef3c7",
-                  borderRadius: "8px",
-                }}
-                className="py-3 border-b border-gray-200 cursor-pointer"
-              >
-                <p>
-                  <strong>{activity.student}</strong> - {activity.activity}
-                </p>
-                <span className="text-sm text-gray-500">{activity.time}</span>
-              </motion.li>
-            ))}
-          </ul>
-        </motion.div>
-
         {/* Create Course Modal */}
         {showModal && (
           <motion.div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
