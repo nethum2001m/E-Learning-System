@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -6,7 +7,7 @@ function Login() {
     const [message, setMessage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         setMessage("");
@@ -43,7 +44,7 @@ function Login() {
                         <h2 className="text-3xl font-bold text-gray-900">Welcome back</h2>
                         <p className="mt-2 text-sm text-gray-600">Please sign in to your account</p>
                     </div>
-                    
+
                     <form className="space-y-6" onSubmit={handleSubmit}>
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
@@ -61,7 +62,7 @@ function Login() {
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
-                        
+
                         <div>
                             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                                 Password
@@ -93,9 +94,12 @@ function Login() {
                             </div>
 
                             <div className="text-sm">
-                                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500 transition duration-300 ease-in-out">
+                                <Link
+                                    to="/forgot-password"
+                                    className="font-medium text-indigo-600 hover:text-indigo-500 transition duration-300 ease-in-out"
+                                >
                                     Forgot your password?
-                                </a>
+                                </Link>
                             </div>
                         </div>
 
@@ -114,7 +118,7 @@ function Login() {
                                 {isLoading ? 'Signing in...' : 'Sign in'}
                             </button>
                         </div>
-                        
+
                         {message && (
                             <div className={`rounded-md p-4 ${message.includes('successful') ? 'bg-green-50' : 'bg-red-50'}`}>
                                 <div className={`text-sm text-center ${message.includes('successful') ? 'text-green-800' : 'text-red-800'}`}>
@@ -123,7 +127,7 @@ function Login() {
                             </div>
                         )}
                     </form>
-                    
+
                     <div className="mt-6">
                         <div className="relative">
                             <div className="absolute inset-0 flex items-center">
@@ -136,29 +140,38 @@ function Login() {
 
                         <div className="mt-6 grid grid-cols-2 gap-3">
                             <div>
-                                <a href="#" className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300 ease-in-out">
+                                <Link
+                                    to="/login-with-facebook"
+                                    className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300 ease-in-out"
+                                >
                                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/>
                                     </svg>
-                                </a>
+                                </Link>
                             </div>
 
                             <div>
-                                <a href="#" className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300 ease-in-out">
+                                <Link
+                                    to="/login-with-google"
+                                    className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300 ease-in-out"
+                                >
                                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5.46 8.26l-7.09 3.11c-.2.08-.36.27-.36.48s.16.41.36.48l7.09 3.11c.35.14.7-.19.58-.54l-1.31-3.76 1.31-3.76c.12-.35-.23-.68-.58-.54z"/>
                                     </svg>
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div className="mt-6 text-center">
                         <p className="text-sm text-gray-600">
-                            Don't have an account?{' '}
-                            <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500 transition duration-300 ease-in-out">
+                            Don’t have an account?{' '}
+                            <Link
+                                to="/signup"
+                                className="font-medium text-indigo-600 hover:text-indigo-500 transition duration-300 ease-in-out"
+                            >
                                 Sign up
-                            </a>
+                            </Link>
                         </p>
                     </div>
                 </div>
