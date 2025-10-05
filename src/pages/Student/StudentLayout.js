@@ -12,8 +12,4 @@ const StudentLayout = () => {
   )
 }
 
-<<<<<<< HEAD
 export default StudentLayout
-=======
-export default StudentLayout
->>>>>>> vidu_frontend
