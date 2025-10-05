@@ -11,8 +11,6 @@ function Login() {
         e.preventDefault();
         setIsLoading(true);
         setMessage("");
-
-        
             await axios.post("http://localhost:8000/api/user/login",{
                 email,
                 password
@@ -24,7 +22,7 @@ function Login() {
                     navigate("/student")
                 }else if(res.data.role==="Teacher")
                     {
-                        navigate("/teacher-dashboard")
+                        navigate("/teacher/dashboard")
                     }else if(res.data.role==="Admin")
                         {
                             navigate("/admin-dashboard")
@@ -55,7 +53,7 @@ function Login() {
                     }
                     else if(role==="Teacher")
                     {
-                        navigate("/teacher-dashboard")
+                        navigate("/teacher/dashboard")
                     }else if(role==="Admin")
                     {
                         navigate("/admin-dashboard")
