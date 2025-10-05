@@ -19,7 +19,7 @@ function Login() {
                 localStorage.setItem("role",res.data.role);
                 setMessage("Login successful!");
                 if(res.data.role==="Student"){
-                    navigate("/student-dashboard")
+                    navigate("/student")
                 }else if(res.data.role==="Teacher")
                     {
                         navigate("/teacher/dashboard")
@@ -49,7 +49,7 @@ function Login() {
                 }).then((res)=>{
                     if(role==="Student")
                     {
-                        navigate("/student-dashboard")
+                        navigate("/student")
                     }
                     else if(role==="Teacher")
                     {
