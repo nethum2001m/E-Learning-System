@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const Courses = () => {
     const [courses, setCourses] = useState([]);
@@ -13,7 +14,7 @@ const Courses = () => {
     const indexOfFirstCourse = indexOfLastCourse-coursesPerPage
     const currentCourses = filteredCourses.slice(indexOfFirstCourse,indexOfLastCourse) 
     const totalPages = Math.ceil(filteredCourses.length/coursesPerPage)
-
+    const navigate = useNavigate()
     const URL = "http://localhost:8000/api/student/getAllCourses";
     const [courseCategory,setCourseCategory] = useState("")
     useEffect(() => {
@@ -157,8 +158,11 @@ const Courses = () => {
                                             </span>
                                         ) : null}
                                     </div>
-                                    <button className="mt-auto bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold py-2 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
-                                        Enroll Now
+                                    <button className="mt-auto bg-gradient-to-r
+                                     from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold 
+                                     py-2 px-5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                                     onClick={()=>navigate(`/student/courseDetails/${course._id}`)}>
+                                        More Info
                                     </button>
                                 </div>
                             </div>

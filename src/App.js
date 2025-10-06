@@ -11,6 +11,10 @@ import EditCoursePage from './pages/Teacher/EditCoursePage';
 import TeacherLayout from './pages/Teacher/TeacherLayout';
 import StudentLayout from './pages/Student/StudentLayout';
 import Courses from './pages/Student/Courses';
+import CourseDetailsPage from './pages/Student/CourseDetailsPage';
+import CourseInclude from './pages/Student/CourseInclude';
+import EnrolledCourses from './pages/Student/EnrolledCourses';
+import Student from './pages/Teacher/Student';
 
 
 function App() {
@@ -23,12 +27,16 @@ function App() {
                 <Route path='/student' element={<StudentLayout/>}>
                     <Route index element={<StudentDashboard/>}></Route>
                     <Route path='Courses' element={<Courses/>}/>
+                    <Route path='courseDetails/:id' element={<CourseDetailsPage/>}/>
+                    <Route path='courseInclude/:id' element={<CourseInclude/>}/>
+                    <Route path='enrolledCourses' element={<EnrolledCourses/>}/>
                 </Route>
                 <Route index element={<Login />} />
                 <Route path='/teacher' element={<TeacherLayout/>}>
                     <Route path='dashboard' element={<TeacherDashboard/>}/>
                     <Route path='courses' element={<CoursesPage/>}/>
                     <Route path='courseEditPage/:id' element={<EditCoursePage/>}/>
+                    <Route path='students' element={<Student/>}/>
                 </Route>
             </Routes > 
         </div> 

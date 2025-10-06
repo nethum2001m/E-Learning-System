@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Home, BookOpen } from "lucide-react"; // nice icons
+import { Home, BookOpen, Users } from "lucide-react"; // relevant icons
 
 const Sidebar = () => {
   return (
@@ -26,6 +26,14 @@ const Sidebar = () => {
         >
           <BookOpen size={20} />
           <span className="text-lg">Courses</span>
+        </Link>
+        
+        <Link
+          to="/teacher/students"
+          className="flex items-center space-x-3 p-3 rounded-lg hover:bg-indigo-600 transition"
+        >
+          <Users size={20} />
+          <span className="text-lg">Students</span>
         </Link>
       </nav>
 
