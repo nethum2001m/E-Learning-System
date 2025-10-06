@@ -33,7 +33,10 @@ function EditCoursePage() {
   } }
 
      );
-
+     setDescription("")
+     setTitle("")
+     setVideos([])
+     setPdfs([])
      alert("Lessons Updated Successfully");
 
   }catch(err){

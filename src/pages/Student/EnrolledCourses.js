@@ -12,30 +12,25 @@ const EnrolledCourses = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    let userid
     const token = localStorage.getItem("token")
 
     const checkAuth = async () => {
       try {
         const res = await axios.post(authURL, null, {
-          headers: {
-            "Authorization": `Bearer ${token}`
-          }
+          headers: { "Authorization": `Bearer ${token}` }
         })
         setUserId(res.data.userid)
-        userid = res.data.userid
+        const userid = res.data.userid
 
         const getCourses = async () => {
           try {
             const res = await axios.get(
               `http://localhost:8000/api/course/getEnrolledCourses/${userid}`,
-              {
-                headers: {
-                  'Authorization': `Bearer ${token}`
-                }
-              }
+              { headers: { 'Authorization': `Bearer ${token}` } }
             )
-            setEnrolledCourses(res.data.courses)
+            // Filter out null or invalid courses before setting state
+            const validCourses = res.data.courses.filter(course => course && course.title)
+            setEnrolledCourses(validCourses)
           } catch (error) {
             console.log(error)
           }
@@ -48,17 +43,19 @@ const EnrolledCourses = () => {
     checkAuth()
   }, [navigate])
 
-  // Filter courses by search
-  const filteredCourses = enrolledCourses.filter(course =>
-    course.title.toLowerCase().includes(search.toLowerCase())
-  );
+  // Filter courses by search safely
+  const filteredCourses = enrolledCourses.filter(
+    course =>
+      course &&
+      course.title &&
+      course.title.toLowerCase().includes(search.toLowerCase())
+  )
 
   // Pagination logic
   const indexOfLastCourse = currentPage * coursesPerPage
   const indexOfFirstCourse = indexOfLastCourse - coursesPerPage
   const currentCourses = filteredCourses.slice(indexOfFirstCourse, indexOfLastCourse)
   const totalPages = Math.ceil(filteredCourses.length / coursesPerPage)
-
   const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
   return (
@@ -66,6 +63,8 @@ const EnrolledCourses = () => {
       <h1 className="text-3xl font-bold text-center mb-10 text-gray-800">
         My Enrolled Courses
       </h1>
+
+      {/* Search */}
       <div className="max-w-md mx-auto mb-8">
         <input
           type="text"
@@ -76,35 +75,38 @@ const EnrolledCourses = () => {
         />
       </div>
 
+      {/* Courses */}
       {currentCourses.length > 0 ? (
         <>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {currentCourses.map((course, index) => (
-              <div
-                key={index}
-                className="bg-white shadow-lg rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300"
-              >
-                <img
-                  src={`http://localhost:8000/getImages/images/${course.lessonPicture}`}
-                  alt={course.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-5">
-                  <h2 className="text-xl font-semibold text-gray-800 mb-2 truncate">
-                    {course.title}
-                  </h2>
-                  <p className="text-gray-600 text-sm line-clamp-3 mb-4">
-                    {course.description}
-                  </p>
-                  <button
-                    onClick={() => navigate(`/student/courseInclude/${course._id}`)}
-                    className="w-full bg-indigo-600 text-white py-2 px-4 rounded-xl font-medium hover:bg-indigo-700 transition-colors"
-                  >
-                    Visit Course
-                  </button>
+            {currentCourses.map((course, index) =>
+              course ? (
+                <div
+                  key={index}
+                  className="bg-white shadow-lg rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300"
+                >
+                  <img
+                    src={`http://localhost:8000/getImages/images/${course.lessonPicture}`}
+                    alt={course.title || "Course Image"}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-5">
+                    <h2 className="text-xl font-semibold text-gray-800 mb-2 truncate">
+                      {course.title || "Untitled Course"}
+                    </h2>
+                    <p className="text-gray-600 text-sm line-clamp-3 mb-4">
+                      {course.description || "No description available"}
+                    </p>
+                    <button
+                      onClick={() => navigate(`/student/courseInclude/${course._id}`)}
+                      className="w-full bg-indigo-600 text-white py-2 px-4 rounded-xl font-medium hover:bg-indigo-700 transition-colors"
+                    >
+                      Visit Course
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ) : null
+            )}
           </div>
 
           {/* Pagination Controls */}
