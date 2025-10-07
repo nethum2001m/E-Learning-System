@@ -8,15 +8,44 @@ function CoursesPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:8000/api/course/all");
-        setCourses(response.data);
-      } catch (err) {
-        setError(err);
-      }
-    };
-    fetchData();
+    const token = localStorage.getItem("token")
+    let teacherID
+    const validateAuttAndFetchData = async() =>{
+      await axios.post('http://localhost:8000/api/teacher/getteacherid',null,
+        {
+            headers:{
+              'Authorization':`Bearer ${token}`,
+            }
+        }
+      ).then((res)=>{
+          teacherID = res.data.teacherid
+          const fetchData = async () => {
+          try {
+            const response = await axios.get(`http://localhost:8000/api/course/all/${teacherID}`,{
+              headers:{
+                 'Authorization':`Bearer ${token}`,
+              } 
+            });
+            setCourses(response.data);
+          } catch (err) {
+            if(err.response.status==404)
+            {
+              setError({
+                message:"Courses are empty"
+              })
+            }
+            else{
+            setError(err)
+            }
+          }
+          }
+          fetchData();
+      }).catch((err)=>{
+        navigate('/')
+      })
+    }
+    validateAuttAndFetchData()
+    
   }, []);
 
   const handleDelete = async (id) => {

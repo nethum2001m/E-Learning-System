@@ -90,7 +90,10 @@ const TeacherDashboard = () => {
         });
     };
     submitform();
-  }; 
+  };
+  const createQuizes = () =>{
+      navigate('/teacher/quiz')
+  } 
   const PageCourses =()=> {
     navigate("/teacher/courses")
   }
@@ -159,10 +162,11 @@ const TeacherDashboard = () => {
         {/* Quick Actions */}
         <div className="flex flex-wrap gap-4 mb-8">
           <motion.button
+            onClick={createQuizes}
             whileHover={{ scale: 1.05 }}
             className="flex items-center justify-center gap-2 flex-1 min-w-[150px] py-3 bg-orange-400 text-white rounded-lg font-bold"
           >
-            <FaPlus /> Create Assignment
+            <FaPlus /> Create Quizes
           </motion.button>
 
           <motion.button

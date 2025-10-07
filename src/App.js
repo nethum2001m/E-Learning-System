@@ -15,6 +15,7 @@ import CourseDetailsPage from './pages/Student/CourseDetailsPage';
 import CourseInclude from './pages/Student/CourseInclude';
 import EnrolledCourses from './pages/Student/EnrolledCourses';
 import Student from './pages/Teacher/Student';
+import CreateQuiz from './pages/Teacher/CreateQuiz';
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
                     <Route path='courses' element={<CoursesPage/>}/>
                     <Route path='courseEditPage/:id' element={<EditCoursePage/>}/>
                     <Route path='students' element={<Student/>}/>
+                    <Route path='quiz' element={<CreateQuiz/>}/>
                 </Route>
             </Routes > 
         </div> 
