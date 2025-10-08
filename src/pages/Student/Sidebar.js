@@ -41,6 +41,16 @@ const Sidebar = () => {
               Enrolled Courses
             </Link>
           </li>
+
+          <li>
+            <Link
+              to="/student/announcements"
+              className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors font-semibold"
+            >
+              <FaGraduationCap className="w-5 h-5" />
+              Announcements
+            </Link>
+          </li>
         </ul>
       </nav>
 

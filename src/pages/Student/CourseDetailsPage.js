@@ -37,7 +37,7 @@ const CourseDetailsPage = () => {
         const validateAuthandgetCourseDetails = async() =>{
             await axios.post(validateAuthURL,null,{
                 headers:{
-                    Authorization:`Bearer ${token}`,
+                    'Authorization':`Bearer ${token}`,
                 }
             }).then((res)=>{
                 setUserId(res.data.userid)
@@ -47,7 +47,7 @@ const CourseDetailsPage = () => {
             })
             await axios.get(URL,{
                 headers:{
-                    Authorization:`Bearer ${token}`,
+                    'Authorization':`Bearer ${token}`
                 }
             }).then((res)=>{
                 const enrolledStudents = res.data.course.enrollStudents
@@ -80,7 +80,7 @@ const CourseDetailsPage = () => {
                     userId:userId
                 },{
                     headers:{
-                        Authorization:`Bearer ${token}`,
+                        'Authorization':`Bearer ${token}`
                     }
                 }).then((res)=>{
                     alert("Enrolled successfully")
@@ -108,7 +108,7 @@ const CourseDetailsPage = () => {
             },
             {
                 headers:{
-                    Authorization: `Bearer ${token}`
+                    'Authorization':`Bearer ${token}`
                 }
             }).then(async(res)=>{
                     const { url } = res.data;
