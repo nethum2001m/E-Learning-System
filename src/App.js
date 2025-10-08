@@ -16,6 +16,7 @@ import CourseInclude from './pages/Student/CourseInclude';
 import EnrolledCourses from './pages/Student/EnrolledCourses';
 import Student from './pages/Teacher/Student';
 import CreateQuiz from './pages/Teacher/CreateQuiz';
+import Quiz from './pages/Student/Quiz';
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
                     <Route path='courseDetails/:id' element={<CourseDetailsPage/>}/>
                     <Route path='courseInclude/:id' element={<CourseInclude/>}/>
                     <Route path='enrolledCourses' element={<EnrolledCourses/>}/>
+                    <Route path='quiz/:id' element={<Quiz/>}/>
                 </Route>
                 <Route index element={<Login />} />
                 <Route path='/teacher' element={<TeacherLayout/>}>

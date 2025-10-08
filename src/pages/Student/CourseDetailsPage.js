@@ -84,7 +84,7 @@ const CourseDetailsPage = () => {
                     }
                 }).then((res)=>{
                     alert("Enrolled successfully")
-                    navigate(`courseInclude/${courseDetail._id}`)
+                    navigate(`/student/courseInclude/${courseDetail._id}`)
                 }).catch((error)=>{
                     console.log(error)
                 })
