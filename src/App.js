@@ -17,6 +17,7 @@ import EnrolledCourses from './pages/Student/EnrolledCourses';
 import Student from './pages/Teacher/Student';
 import CreateQuiz from './pages/Teacher/CreateQuiz';
 import Quiz from './pages/Student/Quiz';
+import CreateAnnouncement from './pages/Teacher/CreateAnnouncement';
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
                     <Route path='courseEditPage/:id' element={<EditCoursePage/>}/>
                     <Route path='students' element={<Student/>}/>
                     <Route path='quiz' element={<CreateQuiz/>}/>
+                    <Route path='createAnnouncement' element={<CreateAnnouncement/>}/>
                 </Route>
             </Routes > 
         </div> 

@@ -97,6 +97,9 @@ const TeacherDashboard = () => {
   const PageCourses =()=> {
     navigate("/teacher/courses")
   }
+  const createAnnouncement = () =>{
+    navigate('/teacher/createAnnouncement')
+  }
   const stats = [
     {
       title: "Total Students",
@@ -170,6 +173,7 @@ const TeacherDashboard = () => {
           </motion.button>
 
           <motion.button
+            onClick={createAnnouncement}
             whileHover={{ scale: 1.05 }}
             className="flex items-center justify-center gap-2 flex-1 min-w-[150px] py-3 bg-blue-500 text-white rounded-lg font-bold"
           >
