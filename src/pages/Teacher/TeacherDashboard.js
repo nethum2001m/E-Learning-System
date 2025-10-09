@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 const TeacherDashboard = () => {
   const navigate = useNavigate();
   const [totalStudents,setTotalStudents] = useState(0)
+  const [CourseCount,setCourseCount] = useState(0)
   const [showModal, setShowModal] = useState(false);
   const [price,setPrice] = useState(0);
   const [title, setTitle] = useState("");
@@ -54,6 +55,16 @@ const TeacherDashboard = () => {
               console.log(err)
             })
           }
+          const getCoursesCount = async() =>{
+              await axios.get(`http://localhost:8000/api/teacher/countNumberOfCourses/${teacherId}`,{
+                headers:{
+                  'Authorization':`Bearer ${token}`,
+                }
+              }).then((res)=>{
+                setCourseCount(res.data.count)
+              })
+          }
+          getCoursesCount()
           getTotalStudents()
           setTeacher(res.data.teacherid);
         })
@@ -124,7 +135,7 @@ const TeacherDashboard = () => {
     },
     {
       title: "Courses Assigned",
-      value: 8,
+      value: CourseCount,
       icon: <FaBook className="text-white text-2xl" />,
     },
     {
