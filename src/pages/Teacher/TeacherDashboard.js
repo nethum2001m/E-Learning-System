@@ -23,6 +23,7 @@ const TeacherDashboard = () => {
   const [category,setCategory] = useState("")
   const [teacher, setTeacher] = useState("");
   const [payorFree, setPayOrFree] = useState("");
+  const [QuizesCount,setQuizesCount] = useState(0)
   const [coursePicture, setCoursePicture] = useState(null);
   const getTotalStudentsUrl ="http://localhost:8000/api/teacher/totalNumberOfStudents"
   const url = "http://localhost:8000/api/teacher/getteacherid";
@@ -64,6 +65,16 @@ const TeacherDashboard = () => {
                 setCourseCount(res.data.count)
               })
           }
+          const getQuizCount = async() =>{
+              await axios.get(`http://localhost:8000/api/teacher/countNumberOfQuizes/${teacherId}`,{
+                headers:{
+                  'Authorization':`Bearer ${token}`,
+                }
+              }).then((res)=>{
+                setQuizesCount(res.data.count)
+              })
+          }
+          getQuizCount()
           getCoursesCount()
           getTotalStudents()
           setTeacher(res.data.teacherid);
@@ -139,8 +150,8 @@ const TeacherDashboard = () => {
       icon: <FaBook className="text-white text-2xl" />,
     },
     {
-      title: "Pending Assignments",
-      value: 15,
+      title: "Total Quizes",
+      value: QuizesCount,
       icon: <FaClipboardList className="text-white text-2xl" />,
     },
   ];
