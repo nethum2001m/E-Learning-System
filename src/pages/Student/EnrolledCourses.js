@@ -28,6 +28,7 @@ const EnrolledCourses = () => {
               `http://localhost:8000/api/course/getEnrolledCourses/${userid}`,
               { headers: { 'Authorization': `Bearer ${token}` } }
             )
+            
             // Filter out null or invalid courses before setting state
             const validCourses = res.data.courses.filter(course => course && course.title)
             setEnrolledCourses(validCourses)

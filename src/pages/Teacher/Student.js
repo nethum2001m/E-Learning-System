@@ -29,7 +29,7 @@ const TeacherStudents = () => {
           { teacherId },
           { headers: { Authorization: `Bearer ${token}` } }
         );
-
+        
         const courses = coursesRes.data.courses;
 
         // 3. Group by student

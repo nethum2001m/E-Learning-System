@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 const TeacherDashboard = () => {
   const navigate = useNavigate();
+  const [totalStudents,setTotalStudents] = useState(0)
   const [showModal, setShowModal] = useState(false);
   const [price,setPrice] = useState(0);
   const [title, setTitle] = useState("");
@@ -22,7 +23,7 @@ const TeacherDashboard = () => {
   const [teacher, setTeacher] = useState("");
   const [payorFree, setPayOrFree] = useState("");
   const [coursePicture, setCoursePicture] = useState(null);
-
+  const getTotalStudentsUrl ="http://localhost:8000/api/teacher/totalNumberOfStudents"
   const url = "http://localhost:8000/api/teacher/getteacherid";
 
   useEffect(() => {
@@ -39,6 +40,21 @@ const TeacherDashboard = () => {
           }
         )
         .then((res) => {
+          const teacherId = res.data.teacherid
+          const getTotalStudents = async() =>{
+            await axios.post(getTotalStudentsUrl,{
+              teacherId:teacherId
+            },{
+              headers:{
+                'Authorization':`Bearer ${token}`,
+              }
+            }).then((res)=>{
+              setTotalStudents(res.data.studentCount)
+            }).catch((err)=>{
+              console.log(err)
+            })
+          }
+          getTotalStudents()
           setTeacher(res.data.teacherid);
         })
         .catch(() => {
@@ -103,7 +119,7 @@ const TeacherDashboard = () => {
   const stats = [
     {
       title: "Total Students",
-      value: 120,
+      value: totalStudents,
       icon: <FaUsers className="text-white text-2xl" />,
     },
     {
