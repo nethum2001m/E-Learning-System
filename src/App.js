@@ -19,6 +19,9 @@ import CreateQuiz from './pages/Teacher/CreateQuiz';
 import Quiz from './pages/Student/Quiz';
 import CreateAnnouncement from './pages/Teacher/CreateAnnouncement';
 import Announcement from './pages/Student/Announcement';
+import Quizes from './pages/Teacher/Quizes';
+import QuizInclude from './pages/Teacher/QuizInclude';
+import QuizResult from './pages/Teacher/QuizResult';
 
 
 function App() {
@@ -39,12 +42,15 @@ function App() {
                 </Route>
                 <Route index element={<Login />} />
                 <Route path='/teacher' element={<TeacherLayout/>}>
+                    <Route path='QuizInclude/:id' element={<QuizInclude/>}/>
                     <Route path='dashboard' element={<TeacherDashboard/>}/>
+                    <Route path='quiz' element={<Quizes/>}/>
                     <Route path='courses' element={<CoursesPage/>}/>
                     <Route path='courseEditPage/:id' element={<EditCoursePage/>}/>
                     <Route path='students' element={<Student/>}/>
-                    <Route path='quiz' element={<CreateQuiz/>}/>
+                    <Route path='quizes' element={<CreateQuiz/>}/>
                     <Route path='createAnnouncement' element={<CreateAnnouncement/>}/>
+                    <Route path='quizResult/:id' element={<QuizResult/>}/>
                 </Route>
             </Routes > 
         </div> 

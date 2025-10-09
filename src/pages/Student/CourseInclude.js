@@ -22,6 +22,7 @@ const CourseInclude = () => {
         const res = await axios.get(getCourseUrl, {
           headers: { Authorization: `Bearer ${token}` },
         });
+        setCourseData(res.data.course);
         const courseId = res.data.course._id
         const quizes = await axios.get(`http://localhost:8000/api/student/getQuizzes/${courseId}`,{
           headers:{
@@ -29,7 +30,7 @@ const CourseInclude = () => {
           }
         })
         setQuizes(quizes.data)
-        setCourseData(res.data.course);
+        
       } catch (err) {
         if(err.response.status==401 || err.response.status==403)
         {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Home, BookOpen, Users } from "lucide-react"; // relevant icons
+import { Home, BookOpen, Users, FileQuestion } from "lucide-react"; // added FileQuestion
 
 const Sidebar = () => {
   return (
@@ -35,9 +35,17 @@ const Sidebar = () => {
           <Users size={20} />
           <span className="text-lg">Students</span>
         </Link>
+
+        <Link
+          to="/teacher/quiz"
+          className="flex items-center space-x-3 p-3 rounded-lg hover:bg-indigo-600 transition"
+        >
+          <FileQuestion size={20} />
+          <span className="text-lg">Quizzes</span>
+        </Link>
       </nav>
 
-      {/* Footer (optional) */}
+      {/* Footer */}
       <div className="p-4 border-t border-indigo-500 text-sm text-center">
         © 2025 E-Learning
       </div>

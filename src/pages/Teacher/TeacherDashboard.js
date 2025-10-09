@@ -130,7 +130,7 @@ const TeacherDashboard = () => {
     submitform();
   };
   const createQuizes = () =>{
-      navigate('/teacher/quiz')
+      navigate('/teacher/quizes')
   } 
   const PageCourses =()=> {
     navigate("/teacher/courses")
