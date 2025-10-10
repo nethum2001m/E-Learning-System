@@ -1,6 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaTachometerAlt, FaBookOpen, FaGraduationCap } from "react-icons/fa"; // FontAwesome icons
+import {
+  FaTachometerAlt,
+  FaBookOpen,
+  FaGraduationCap,
+  FaBullhorn,   // for announcements
+  FaChalkboardTeacher, // alternative for enrolled courses
+} from "react-icons/fa";
 
 const Sidebar = () => {
   return (
@@ -37,7 +43,7 @@ const Sidebar = () => {
               to="/student/enrolledCourses"
               className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors font-semibold"
             >
-              <FaGraduationCap className="w-5 h-5" />
+              <FaChalkboardTeacher className="w-5 h-5" />
               Enrolled Courses
             </Link>
           </li>
@@ -47,7 +53,7 @@ const Sidebar = () => {
               to="/student/announcements"
               className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors font-semibold"
             >
-              <FaGraduationCap className="w-5 h-5" />
+              <FaBullhorn className="w-5 h-5" />
               Announcements
             </Link>
           </li>
