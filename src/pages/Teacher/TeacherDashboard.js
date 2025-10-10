@@ -19,6 +19,8 @@ const TeacherDashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [price,setPrice] = useState(0);
   const [title, setTitle] = useState("");
+  const [latestQuizSubmissions,setLatestQuizSubmissions] = useState(null)
+  const [latestEnrollments,setLatestEnrollments] = useState(null)
   const [description, setDescription] = useState("");
   const [category,setCategory] = useState("")
   const [teacher, setTeacher] = useState("");
@@ -74,6 +76,32 @@ const TeacherDashboard = () => {
                 setQuizesCount(res.data.count)
               })
           }
+          const getLatestEnrollments = async() =>{
+              await axios.get(`http://localhost:8000/api/teacher/getLatestEnrollments/${teacherId}`,{
+                headers:{
+                  'Authorization':`Bearer ${token}`,
+                }
+              }).then((res)=>{
+                
+                setLatestEnrollments(res.data.enrollments)
+              }).catch((err)=>{
+                console.log(err)
+              })
+          }
+          const getLatestQuizSubmissions = async() =>{
+              await axios.get(`http://localhost:8000/api/teacher/getLatestQuizSubmissions/${teacherId}`,{
+                headers:{
+                  'Authorization':`Bearer ${token}`,
+                }
+              }).then((res)=>{
+                
+                setLatestQuizSubmissions(res.data.quizSubmissions)
+              }).catch((err)=>{
+                console.log(err)
+              })
+          }
+          getLatestQuizSubmissions()
+          getLatestEnrollments()
           getQuizCount()
           getCoursesCount()
           getTotalStudents()
@@ -329,6 +357,70 @@ const TeacherDashboard = () => {
             </motion.div>
           </motion.div>
         )}
+        {/* Latest Enrollments */}
+<div className="mb-8">
+  <h2 className="text-2xl font-bold mb-4">Latest Enrollments</h2>
+  {latestEnrollments ==null ?  (
+    <p>No recent enrollments</p>
+  ) : (
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-white shadow-md rounded-lg">
+        <thead>
+          <tr className="bg-orange-400 text-white">
+            <th className="py-2 px-4 text-left">Student Name</th>
+            <th className="py-2 px-4 text-left">Email</th>
+            <th className="py-2 px-4 text-left">Course</th>
+            <th className="py-2 px-4 text-left">Enrolled At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {latestEnrollments.map((enroll) => (
+            <tr key={enroll._id} className="border-b">
+              <td className="py-2 px-4">{enroll.studentId?.FullName}</td>
+              <td className="py-2 px-4">{enroll.studentId?.email}</td>
+              <td className="py-2 px-4">{enroll.courseID.title}</td>
+              <td className="py-2 px-4">{new Date(enroll.enrolledAt).toLocaleDateString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+</div>
+
+{/* Latest Quiz Submissions */}
+<div className="mb-8">
+  <h2 className="text-2xl font-bold mb-4">Latest Quiz Submissions</h2>
+  {latestQuizSubmissions ==null  ? (
+    <p>No recent quiz submissions</p>
+  ) : (
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-white shadow-md rounded-lg">
+        <thead>
+          <tr className="bg-green-400 text-white">
+            <th className="py-2 px-4 text-left">Student Name</th>
+            <th className="py-2 px-4 text-left">Email</th>
+            <th className="py-2 px-4 text-left">Quiz Title</th>
+            <th className="py-2 px-4 text-left">Score</th>
+            <th className="py-2 px-4 text-left">Submitted At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {latestQuizSubmissions.map((submission) => (
+            <tr key={submission._id} className="border-b">
+              <td className="py-2 px-4">{submission.studentID.FullName}</td>
+              <td className="py-2 px-4">{submission.studentID.email}</td>
+              <td className="py-2 px-4">{submission.quizId.title}</td>
+              <td className="py-2 px-4">{submission.score}</td>
+              <td className="py-2 px-4">{new Date(submission.submittedAt).toLocaleDateString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+</div>
+
       </main>
     </motion.div>
   );
