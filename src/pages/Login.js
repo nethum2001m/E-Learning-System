@@ -25,7 +25,7 @@ function Login() {
                         navigate("/teacher/dashboard")
                     }else if(res.data.role==="Admin")
                         {
-                            navigate("/admin-dashboard")
+                            navigate("/admin/dashboard")
                         } 
             }).catch((err)=>{
                 setMessage("Login failed. Please check your credentials.");
@@ -56,7 +56,7 @@ function Login() {
                         navigate("/teacher/dashboard")
                     }else if(role==="Admin")
                     {
-                        navigate("/admin-dashboard")
+                        navigate("/admin/dashboard")
                     }
                 }).catch((err)=>{
                     localStorage.removeItem("token")

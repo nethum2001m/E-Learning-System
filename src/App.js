@@ -22,6 +22,12 @@ import Announcement from './pages/Student/Announcement';
 import Quizes from './pages/Teacher/Quizes';
 import QuizInclude from './pages/Teacher/QuizInclude';
 import QuizResult from './pages/Teacher/QuizResult';
+import Layout from './pages/Admin/Layout';
+import AddUser from './pages/Admin/AddUser';
+import AdminCourses from './pages/Admin/AdminCourses';
+import ViewStudents from './pages/Admin/ViewStudents';
+import ViewTeachers from './pages/Admin/ViewTeachers';
+
 
 
 function App() {
@@ -30,7 +36,13 @@ function App() {
         <div className = "min-h-screen bg-gray-50" >
             <Routes >
                 <Route path = "/signup" element = { < Registration /> }/> 
-                <Route path = '/admin-dashboard' element = { < Admin /> }/>
+                <Route path='/admin' element={<Layout/>}>
+                    <Route path='dashboard' element = { < Admin /> }/>
+                    <Route path='addUser' element={<AddUser/>}/>
+                    <Route path='Courses' element={<AdminCourses/>}/>
+                    <Route path='Students' element={<ViewStudents/>}/>
+                    <Route path='teachers' element={<ViewTeachers/>}/>
+                </Route>
                 <Route path='/student' element={<StudentLayout/>}>
                     <Route index element={<StudentDashboard/>}></Route>
                     <Route path='Courses' element={<Courses/>}/>
