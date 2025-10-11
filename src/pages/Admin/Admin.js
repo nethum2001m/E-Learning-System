@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaUsers, FaBook, FaClipboardList, FaChalkboardTeacher, FaPlus } from 'react-icons/fa';
+import { FaUsers, FaBook, FaClipboardList, FaChalkboardTeacher, FaPlus, FaSignOutAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -9,7 +9,7 @@ const AdminDashboard = () => {
   const [totalStudents, setTotalStudents] = useState(0);
   const [totalTeachers, setTotalTeachers] = useState(0);
   const [monthRevenue, setMonthRevenue] = useState(0);
-  const [monthlyRevenue,setMonthlyRevenue] = useState([])
+  const [monthlyRevenue,setMonthlyRevenue] = useState([]);
   const [totalCourses, setTotalCourses] = useState(0);
   const [monthlyEnrollments, setMonthlyEnrollments] = useState([]);
   const [adminId, setAdminId] = useState(null);
@@ -58,12 +58,18 @@ const AdminDashboard = () => {
           getTotalMonthRevenue();
           getTotalCourses();
           getMonthlyEnrollments();
-          getMonthlyRevenue()
+          getMonthlyRevenue();
         })
         .catch(() => navigate("/"));
     };
     getTeacherId();
   }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role")
+    navigate("/");
+  };
 
   const stats = [
     { title: 'Total Students', value: totalStudents, icon: <FaUsers size={24} color="#fff" /> },
@@ -72,21 +78,20 @@ const AdminDashboard = () => {
     { title: 'Total Courses', value: totalCourses, icon: <FaChalkboardTeacher size={24} color="#fff" /> },
   ];
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
-
-  // Optional: gradient colors for bars
+  const cardVariants = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
   const colors = ["#4f46e5", "#3b82f6", "#2563eb", "#1d4ed8", "#1e40af", "#4338ca", "#6366f1", "#818cf8", "#a5b4fc", "#c7d2fe", "#e0e7ff"];
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }} style={{ display: 'flex', minHeight: '100vh', background: '#f3f4f6' }}>
       <main style={{ flex: 1, padding: '2rem' }}>
-        <motion.div initial={{ y: -50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.6 }} style={{ textAlign: 'center', marginBottom: '2rem' }}>
+        {/* Header */}
+        <motion.div initial={{ y: -50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.6 }} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
           <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#2563eb', letterSpacing: '2px', textTransform: 'uppercase', boxShadow: '0 2px 8px rgba(0,0,0,0.08)', padding: '1rem 2rem', borderRadius: '8px', background: '#fff', display: 'inline-block' }}>
             Admin Dashboard
           </h1>
+          <button onClick={handleLogout} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.8rem 1.2rem', background: '#ef4444', color: '#fff', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', border: 'none' }}>
+            <FaSignOutAlt /> Logout
+          </button>
         </motion.div>
 
         {/* Stats Cards */}
@@ -113,15 +118,11 @@ const AdminDashboard = () => {
         <div style={{ background: '#fff', padding: '1.5rem', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
           <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem', color: '#2563eb' }}>Monthly Enrollments</h2>
           <ResponsiveContainer width="100%" height={350}>
-            <BarChart
-              data={monthlyEnrollments}
-              margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
-              barGap={10} // space between bars
-            >
+            <BarChart data={monthlyEnrollments} margin={{ top: 20, right: 30, left: 0, bottom: 5 }} barGap={10}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0"/>
               <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#555' }}/>
               <YAxis tick={{ fontSize: 12, fill: '#555' }}/>
-              <Tooltip cursor={{ fill: 'rgba(37, 99, 235, 0.1)' }} />
+              <Tooltip cursor={{ fill: 'rgba(37, 99, 235, 0.1)' }}/>
               <Bar dataKey="enrollments" barSize={20} radius={[5, 5, 0, 0]}>
                 {monthlyEnrollments.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
@@ -131,28 +132,25 @@ const AdminDashboard = () => {
             </BarChart>
           </ResponsiveContainer>
         </div>
+
         {/* Monthly Revenue Bar Chart */}
-<div style={{ background: '#fff', padding: '1.5rem', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', marginTop: '2rem' }}>
-  <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem', color: '#2563eb' }}>Monthly Revenue</h2>
-  <ResponsiveContainer width="100%" height={350}>
-    <BarChart
-      data={monthlyRevenue} // data from state
-      margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
-      barGap={10} 
-    >
-      <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0"/>
-      <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#555' }}/>
-      <YAxis tick={{ fontSize: 12, fill: '#555' }}/>
-      <Tooltip cursor={{ fill: 'rgba(37, 99, 235, 0.1)' }} formatter={(value) => `Rs ${value}`} />
-      <Bar dataKey="revenue" barSize={20} radius={[5, 5, 0, 0]}>
-        {monthlyRevenue.map((entry, index) => (
-          <Cell key={`cell-revenue-${index}`} fill={colors[index % colors.length]} />
-        ))}
-        <LabelList dataKey="revenue" position="top" fill="#2563eb" fontSize={12} formatter={(value) => `Rs${value}`} />
-      </Bar>
-    </BarChart>
-  </ResponsiveContainer>
-</div>
+        <div style={{ background: '#fff', padding: '1.5rem', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', marginTop: '2rem' }}>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem', color: '#2563eb' }}>Monthly Revenue</h2>
+          <ResponsiveContainer width="100%" height={350}>
+            <BarChart data={monthlyRevenue} margin={{ top: 20, right: 30, left: 0, bottom: 5 }} barGap={10}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0"/>
+              <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#555' }}/>
+              <YAxis tick={{ fontSize: 12, fill: '#555' }}/>
+              <Tooltip cursor={{ fill: 'rgba(37, 99, 235, 0.1)' }} formatter={(value) => `Rs ${value}`} />
+              <Bar dataKey="revenue" barSize={20} radius={[5, 5, 0, 0]}>
+                {monthlyRevenue.map((entry, index) => (
+                  <Cell key={`cell-revenue-${index}`} fill={colors[index % colors.length]} />
+                ))}
+                <LabelList dataKey="revenue" position="top" fill="#2563eb" fontSize={12} formatter={(value) => `Rs${value}`} />
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
 
       </main>
     </motion.div>
